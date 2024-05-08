@@ -32,11 +32,10 @@ router.post('/sign-up', async (req, res) => {
 router.post('/sign-in', async (req, res) => {
   const { userID, password } = req.body;
   const options = {
-    attruibutes: ['password'],
+    attruibutes: ['password', 'userID', 'profile', 'userName'],
     where: { userID: userID },
   };
   const result = await User.findOne(options);
-  // password, result.password
   if (result) {
     const compared = await bcrypt.compare(password, result.password);
     if (compared) {
@@ -44,13 +43,22 @@ router.post('/sign-in', async (req, res) => {
       res.json({
         success: true,
         token: token,
+        member: {
+          userID,
+          profile: result.profile,
+          userName: result.userName,
+        },
         message: '로그인에 성공했습니다.',
       });
     } else {
-      res.json({ success: false, message: '비번이 틀렸습니다.' });
+      res.json({ success: false, token: '', message: '비번이 틀렸습니다.' });
     }
   } else {
-    res.json({ success: false, message: '존재하지않는 아이디입니다.' });
+    res.json({
+      success: false,
+      token: '',
+      message: '존재하지않는 아이디입니다.',
+    });
   }
 });
 
