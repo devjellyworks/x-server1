@@ -3,7 +3,6 @@
 const express = require('express');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
-const { authPlugins } = require('mysql2');
 dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();

@@ -11,8 +11,12 @@ const createHash = async (password, saltRound) => {
   return hashed;
 };
 
+const upload = require('./uploadImage');
+router.post('/sign-up', upload.single('image'));
+
 router.post('/sign-up', async (req, res) => {
   const member = req.body;
+  member.profile = req.filename;
   console.log(member);
   const newPassword = await createHash(member.password, 10);
   console.log(newPassword);

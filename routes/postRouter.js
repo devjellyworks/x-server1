@@ -22,4 +22,16 @@ router.get('/', async (req, res) => {
   res.json({ success: true, documents: result, message: 'post 조회성공' });
 });
 
+router.get('/:uid', async (req, res) => {
+  const userID = req.params.uid;
+  const options = {
+    where: {
+      userID: userID,
+    },
+  };
+
+  const result = await Post.findAll(options);
+  res.json({ success: true, documents: result, message: 'post 조회성공' });
+});
+
 module.exports = router;
